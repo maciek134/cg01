@@ -3,10 +3,11 @@
  * 
  * @param input the array to flatten
  * @param parents internal array references
- * @returns flat array
+ * @returns flattened array
  */
-function flattenInternal(input: any[], parents: WeakSet<any>): any[] {
+ function flattenInternal(input: any[], parents: WeakSet<any>[]): any[] {
   const ret: any[] = [];
+  const newParents = new WeakSet();
 
   for (const value of input) {
     if (!Array.isArray(value)) {
@@ -14,17 +15,22 @@ function flattenInternal(input: any[], parents: WeakSet<any>): any[] {
       continue;
     }
 
-    if (parents.has(value)) {
+    if (parents.some((set) => set.has(value))) {
       throw new TypeError('input is circular');
     }
 
-    parents.add(value);
-    ret.push(...flattenInternal(value, parents));
+    newParents.add(value);
+    ret.push(...flattenInternal(value, [ ...parents, newParents ]));
   }
 
   return ret;
 }
 
+/**
+ * Flattens an arbitrary array
+ * @param input the array to flatten
+ * @returns flattened array
+ */
 export function flatten(input: any[]): any[] {
-  return flattenInternal(input, new WeakSet());
+  return flattenInternal(input, []);
 }

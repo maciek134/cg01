@@ -19,4 +19,13 @@ describe('01', () => {
 
     expect(testFlatten).to.throw(TypeError, 'input is circular');
   });
+
+  it('should not throw on repeated references', () => {
+    const a: any[] = [ 1, 2, 3 ];
+    const b = [ a, 5, a ];
+
+    const result = flatten(b);
+
+    expect(result).to.deep.equal([ 1, 2, 3, 5, 1, 2, 3 ]);
+  });
 });
