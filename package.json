@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha --require ts-node/register --extensions ts **/*.spec.ts",
-    "test:watch": "yarn test --watch --watch-files **/*.spec.ts"
+    "test:watch": "yarn test --watch --watch-files **/*.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.3.3",
